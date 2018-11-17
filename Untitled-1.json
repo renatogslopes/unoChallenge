@@ -1,0 +1,47 @@
+{
+    "user": [{
+        "id": "0",
+        "email": "renatolopes@outlook.pt",
+        "name": "Renato",
+        "role": [
+            "Software Developer"
+        ]
+    
+    }, {
+        "id": "1",
+        "email": "support@test.com",
+        "name": "Support",
+        "role": [
+            "HR"
+        ]
+    }, {
+        "id": "2",
+        "email": "admin@test.pt",
+        "name": "Admin",
+        "role": [
+            "CEO","CTO"
+        ]
+    }],
+    "role": [{
+        "id": "0",
+        "name": "CEO"
+    },{
+        "id": "1",
+        "name": "CTO"
+    },{
+        "id": "2",
+        "name": "Project Manager"
+    }, {
+        "id": "3",
+        "name": "HR"
+    }, {
+        "id": "4",
+        "name": "Support"
+    },{
+        "id": "5",
+        "name": "Software Developer"
+    }, {
+        "id": "6",
+        "name": "UX Designer"
+    }]
+}

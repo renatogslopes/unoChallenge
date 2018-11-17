@@ -1,0 +1,97 @@
+<div mdl-shadow="2">
+  <mdl-layout #mdlLayout1="mdlLayout" mdl-layout-fixed-header mdl-layout-header-seamed>
+    <mdl-layout-header>
+      <mdl-layout-header-row>
+        <mdl-layout-title>Roles</mdl-layout-title>
+        <mdl-layout-spacer></mdl-layout-spacer>
+        <mdl-spinner [active]="bLoading"></mdl-spinner>
+        <button *ngIf="!bLoading" mdl-button mdl-button-type="raised" mdl-colored="accent" mdl-ripple (click)="createRoleDialog.show()">
+          New Role
+        </button>
+      </mdl-layout-header-row>
+    </mdl-layout-header>
+    <mdl-layout-drawer>
+      <mdl-layout-title>Menu</mdl-layout-title>
+      <nav class="mdl-navigation">
+        <a class="mdl-navigation__link" [routerLink]="['/home']" (click)="mdlLayout1.closeDrawer()">
+          <mdl-icon>person_pin</mdl-icon>&nbsp; Dashboard
+        </a>
+        <a class="mdl-navigation__link" [routerLink]="['/users']" (click)="mdlLayout1.closeDrawer() ">
+          <mdl-icon>person_pin</mdl-icon>&nbsp; Users
+        </a>
+        <a class="mdl-navigation__link" [routerLink]="['/roles']" (click)=" mdlLayout1.closeDrawer()">
+          <mdl-icon>group</mdl-icon>&nbsp; Roles
+        </a>
+        <a class="mdl-navigation__link" (click)="logout(); mdlLayout1.closeDrawer()">
+          <mdl-icon>exit_to_app</mdl-icon>&nbsp; Logout
+        </a>
+      </nav>
+    </mdl-layout-drawer>
+    <mdl-layout-content>
+      <div *ngIf="!bLoading">
+        <ul class="demo-list-two mdl-list">
+          <li class="mdl-list__item mdl-list__item--two-line" *ngFor="let item of rRole | paginate: { itemsPerPage: 5, currentPage: p }">
+            <span class="mdl-list__item-primary-content">
+              <i class="material-icons mdl-list__item-avatar">group</i>
+              <span>{{item.name}}</span>
+              <span class="mdl-list__item-sub-title">ID: {{item.id}}</span>
+            </span>
+            <span class="mdl-list__item-secondary-content">
+              <button mdl-button mdl-button-type="icon" (click)="editRole(item); editRoleDialog.show()">
+                <mdl-icon>edit</mdl-icon>
+              </button>
+            </span>
+            <span class="mdl-list__item-secondary-content">
+              <button mdl-button mdl-button-type="icon" (click)="deleteRole(item.id);">
+                <mdl-icon>delete</mdl-icon>
+              </button>
+            </span>
+          </li>
+        </ul>
+        <pagination-controls style="text-align: center;" (pageChange)="p = $event"></pagination-controls>
+      </div>
+    </mdl-layout-content>
+  </mdl-layout>
+</div>
+
+<!-- NEW ROLE DIALOG-->
+<mdl-dialog #createRoleDialog [mdl-dialog-config]="{
+  clickOutsideToClose: true,
+  styles:{'width': '300px'},
+  isModal:true,
+  enterTransitionDuration: 400,
+  leaveTransitionDuration: 400}"
+  (hide)="onNewRoleDialogHide()">
+  <h3 class="mdl-dialog__title">New Role</h3>
+  <div class="mdl-dialog__content">
+    <mdl-textfield type="text" label="Role Name" [(ngModel)]="rNewRole.name" floating-label required></mdl-textfield>
+    <p class="error">{{sErrorMessage}}</p>
+    <p class="success">{{sSuccessMessage}}</p>
+  </div>
+  <div class="mdl-dialog__actions">
+    <button mdl-button (click)="saveNewRole()" mdl-button-type="raised" mdl-colored="primary" mdl-ripple>Save</button>
+    <button mdl-button (click)="createRoleDialog.close()" mdl-ripple>Cancel</button>
+    <mdl-spinner [active]="bLoadtingNewRole"></mdl-spinner>
+  </div>
+</mdl-dialog>
+
+<!-- EDIT USER DIALOG-->
+<mdl-dialog #editRoleDialog [mdl-dialog-config]="{
+    clickOutsideToClose: true,
+    styles:{'width': '300px'},
+    isModal:true,
+    enterTransitionDuration: 400,
+    leaveTransitionDuration: 400}"
+  (hide)="onEditRoleDialogHide()">
+  <h3 class="mdl-dialog__title">Edit Role</h3>
+  <div class="mdl-dialog__content">
+    <mdl-textfield type="text" label="Role Name" [(ngModel)]="rEditRole.name" floating-label required></mdl-textfield>
+    <p class="error">{{sErrorMessage}}</p>
+    <p class="success">{{sSuccessMessage}}</p>
+  </div>
+  <div class="mdl-dialog__actions">
+    <button mdl-button (click)="saveEditRole()" mdl-button-type="raised" mdl-colored="primary" mdl-ripple>Save</button>
+    <button mdl-button (click)="editRoleDialog.close()" mdl-ripple>Cancel</button>
+    <mdl-spinner [active]="bLoadtingEditRole"></mdl-spinner>
+  </div>
+</mdl-dialog>

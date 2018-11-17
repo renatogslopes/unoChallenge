@@ -1,0 +1,64 @@
+<div mdl-shadow="2">
+  <mdl-layout #mdlLayout1="mdlLayout" mdl-layout-fixed-header mdl-layout-header-seamed>
+    <mdl-layout-header>
+      <mdl-layout-header-row>
+        <mdl-layout-title>Dashboard</mdl-layout-title>
+      </mdl-layout-header-row>
+    </mdl-layout-header>
+    <mdl-layout-drawer>
+      <mdl-layout-title>Menu</mdl-layout-title>
+      <nav class="mdl-navigation">
+        <a class="mdl-navigation__link"  >
+          <mdl-icon>person_pin</mdl-icon>&nbsp; Dashboard
+        </a>
+        <a class="mdl-navigation__link" [routerLink]="['/users']" (click)="mdlLayout1.closeDrawer()">
+          <mdl-icon>person_pin</mdl-icon>&nbsp; Users
+        </a>
+        <a class="mdl-navigation__link" [routerLink]="['/roles']" (click)="mdlLayout1.closeDrawer()" >
+          <mdl-icon>group</mdl-icon>&nbsp; Roles
+        </a>
+        <a class="mdl-navigation__link" (click)="logout(); mdlLayout1.closeDrawer()">
+          <mdl-icon>exit_to_app</mdl-icon>&nbsp; Logout
+        </a>
+      </nav>
+    </mdl-layout-drawer>
+    <mdl-layout-content>
+      <div class="mdl-grid " style="text-align: center;">
+        <div class="mdl-layout-spacer"></div>
+        <div class="mdl-cell mdl-cell--3-col ">
+          <mdl-card  mdl-shadow="2">
+            <mdl-card-title mdl-card-expand>
+              <h2 mdl-card-title-text>Users</h2>
+            </mdl-card-title>
+            <mdl-card-supporting-text>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+              Aenan convallis.
+            </mdl-card-supporting-text>
+            <mdl-card-actions mdl-card-border>
+              <button mdl-button mdl-colored mdl-ripple (click)="showUsers()">
+                View Users
+              </button>
+            </mdl-card-actions>
+          </mdl-card>
+        </div>
+        <div class="mdl-cell mdl-cell--3-col" >
+          <mdl-card  mdl-shadow="2">
+            <mdl-card-title mdl-card-expand>
+              <h2 mdl-card-title-text>Roles</h2>
+            </mdl-card-title>
+            <mdl-card-supporting-text>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+              Aenan convallis.
+            </mdl-card-supporting-text>
+            <mdl-card-actions mdl-card-border>
+              <button mdl-button mdl-colored mdl-ripple (click)="showRoles();">
+                View Roles
+              </button>
+            </mdl-card-actions>
+          </mdl-card>
+        </div>
+        <div class="mdl-layout-spacer"></div>
+      </div>
+    </mdl-layout-content>
+  </mdl-layout>
+</div>

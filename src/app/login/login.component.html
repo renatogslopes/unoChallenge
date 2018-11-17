@@ -1,0 +1,18 @@
+<div class="container">
+  <h1 class="header">Wellcome to unoChallenge</h1>
+  <div class="row">
+    <div class="col-md-6 mx-auto" style="text-align: center;">
+      <form [formGroup]="fgLoginForm">
+        <mdl-textfield label="Email" name="email" type="text" formControlName="email" floating-label></mdl-textfield>
+        <mdl-textfield label="Password" type="password" formControlName="password" floating-label></mdl-textfield>
+        <p class="error">{{sErrorMessage}}</p>
+        <button [hidden]="bFlagLoading" type="submit" (click)="login(fgLoginForm.value)" mdl-button mdl-button-type="raised"
+          mdl-colored="primary" mdl-ripple>
+          Login
+        </button>
+      </form>
+      <mdl-spinner [active]="bFlagLoading"></mdl-spinner>
+    </div>
+  </div>
+
+</div>

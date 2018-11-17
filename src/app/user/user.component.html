@@ -1,0 +1,125 @@
+<div mdl-shadow="2">
+  <mdl-layout #mdlLayout1="mdlLayout" mdl-layout-fixed-header mdl-layout-header-seamed>
+    <mdl-layout-header>
+      <mdl-layout-header-row>
+        <mdl-layout-title>Users</mdl-layout-title>
+        <mdl-layout-spacer></mdl-layout-spacer>
+        <mdl-spinner [active]="bLoading"></mdl-spinner>
+        <button *ngIf="!bLoading" #newUserButton mdl-button mdl-button-type="raised" mdl-colored="accent" mdl-ripple
+          (click)="createUserDialog.show()">
+          New User
+        </button>
+      </mdl-layout-header-row>
+    </mdl-layout-header>
+    <mdl-layout-drawer>
+      <mdl-layout-title>Menu</mdl-layout-title>
+      <nav class="mdl-navigation">
+        <a class="mdl-navigation__link" [routerLink]="['/home']" (click)="mdlLayout1.closeDrawer()">
+          <mdl-icon>person_pin</mdl-icon>&nbsp; Dashboard
+        </a>
+        <a class="mdl-navigation__link" [routerLink]="['/users']" (click)="mdlLayout1.closeDrawer() ">
+          <mdl-icon>person_pin</mdl-icon>&nbsp; Users
+        </a>
+        <a class="mdl-navigation__link" [routerLink]="['/roles']" (click)=" mdlLayout1.closeDrawer()">
+          <mdl-icon>group</mdl-icon>&nbsp; Roles
+        </a>
+        <a class="mdl-navigation__link" (click)="logout(); mdlLayout1.closeDrawer()">
+          <mdl-icon>exit_to_app</mdl-icon>&nbsp; Logout
+        </a>
+      </nav>
+    </mdl-layout-drawer>
+    <mdl-layout-content>
+
+      <div *ngIf="!bLoading">
+        <ul class="mdl-list">
+          <li class="mdl-list__item mdl-list__item--two-line" *ngFor="let item of uUser | paginate: { itemsPerPage: 5, currentPage: p }">
+            <span class="mdl-list__item-primary-content">
+              <i class="material-icons mdl-list__item-avatar">person</i>
+              <span>{{item.name}} - {{item.role}}</span>
+              <span class="mdl-list__item-sub-title">{{item.email}}</span>
+            </span>
+            <span class="mdl-list__item-secondary-content">
+              <button mdl-button mdl-button-type="icon" (click)="editUser(item); editUserDialog.show()">
+                <mdl-icon>edit</mdl-icon>
+              </button>
+            </span>
+            <span class="mdl-list__item-secondary-content">
+              <button mdl-button mdl-button-type="icon" (click)="deleteUser(item.id);">
+                <mdl-icon>delete</mdl-icon>
+              </button>
+            </span>
+          </li>
+        </ul>
+        <pagination-controls style="text-align: center;" (pageChange)="p = $event"></pagination-controls>
+      </div>
+    </mdl-layout-content>
+  </mdl-layout>
+</div>
+
+<!-- NEW USER DIALOG-->
+<mdl-dialog #createUserDialog [mdl-dialog-config]="{
+              clickOutsideToClose: true,
+              styles:{'width': '300px'},
+              isModal:true,
+              openFrom: newUserButton,
+              enterTransitionDuration: 400,
+              leaveTransitionDuration: 400}"
+  (show)="onNewUserDialogShow()" (hide)="onNewUserDialogHide()">
+  <h3 class="mdl-dialog__title">New User</h3>
+  <div class="mdl-dialog__content">
+    <mdl-textfield type="text" label="Email" [(ngModel)]="newUser.email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+      error-msg="Email not valid" floating-label autofocus required></mdl-textfield>
+
+    <mdl-textfield type="text" label="Name" [(ngModel)]="newUser.name" floating-label required></mdl-textfield>
+
+    <mdl-textfield type="password" label="Password" error-msg="min 6 characters" pattern="^.{6,}$" required [(ngModel)]="passwordTemp"
+      floating-label></mdl-textfield>
+
+    <label style="padding-top:10px">Roles:</label>
+    <div *ngIf="!bLoadingRoles">
+      <div *ngFor="let item of rRole">
+        <mdl-switch (change)="addNewRoleForNewUser(item.name, $event)" mdl-ripple>{{item.name}}</mdl-switch>
+      </div>
+    </div>
+    <p class="error">{{sErrorMessage}}</p>
+    <p class="success">{{sSuccessMessage}}</p>
+  </div>
+
+  <div class="mdl-dialog__actions">
+    <button mdl-button (click)="saveNewUser()" mdl-button-type="raised" mdl-colored="primary" mdl-ripple>Save</button>
+    <button mdl-button (click)="createUserDialog.close()" mdl-ripple>Cancel</button>
+    <mdl-spinner [active]="bLoadtingNewUser"></mdl-spinner>
+  </div>
+</mdl-dialog>
+
+<!-- EDIT USER DIALOG-->
+<mdl-dialog #editUserDialog [mdl-dialog-config]="{
+                clickOutsideToClose: true,
+                styles:{'width': '300px'},
+                isModal:true,
+                enterTransitionDuration: 400,
+                leaveTransitionDuration: 400}"
+  (show)="onEditUserDialogShow()" (hide)="onEditUserDialogHide()">
+  <h3 class="mdl-dialog__title">Edit User</h3>
+  <div class="mdl-dialog__content">
+    <mdl-textfield type="text" label="Email" [(ngModel)]="uEditUser.email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+      error-msg="Email not valid" floating-label autofocus required></mdl-textfield>
+
+    <mdl-textfield type="text" label="Name" [(ngModel)]="uEditUser.name" floating-label required></mdl-textfield>
+
+    <label style="padding-top:10px">Roles:</label>
+    <div *ngIf="!bLoadingRoles">
+      <div *ngFor="let item of rRole">
+        <mdl-switch (change)="addNewRoleForEditUser(item.name, $event)" mdl-ripple>{{item.name}}</mdl-switch>
+      </div>
+    </div>
+    <p class="error">{{sErrorMessage}}</p>
+    <p class="success">{{sSuccessMessage}}</p>
+  </div>
+
+  <div class="mdl-dialog__actions">
+    <button mdl-button (click)="saveEditUser()" mdl-button-type="raised" mdl-colored="primary" mdl-ripple>Save</button>
+    <button mdl-button (click)="editUserDialog.close()" mdl-ripple>Cancel</button>
+    <mdl-spinner [active]="bLoadtingEditUser"></mdl-spinner>
+  </div>
+</mdl-dialog>
