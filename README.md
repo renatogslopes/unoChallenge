@@ -15,6 +15,12 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
 
+## To improve in the future
+
+1. Fix the bug when the user try to add or remove a role for user that already exist. 
+2. Implement the NgRx.
+
+
 ## Running unit tests
 
 Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
