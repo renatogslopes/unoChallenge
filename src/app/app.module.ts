@@ -7,6 +7,10 @@ import { ReactiveFormsModule , FormsModule} from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthService } from './services/auth.service';
+import { AuthEffects } from './store/effects/auth.effects';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreModule } from '@ngrx/store';
+import { reducers } from './store/app.states';
 
 import { AngularFireModule } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
@@ -46,7 +50,9 @@ const ROUTES: Route[] = [
     RouterModule.forRoot(ROUTES),
     MdlModule,
     FormsModule,
-    NgxPaginationModule
+    NgxPaginationModule,
+    StoreModule.forRoot(reducers, {}),
+    EffectsModule.forRoot([AuthEffects]),
   ],
   providers: [AuthService],
   bootstrap: [AppComponent]
